@@ -22,7 +22,7 @@ public class PenroseGrid   {
         var b = 1.0
         let gr = 1.618
         var abList = [0, 1]
-        for _ in 0...9 {
+        for _ in 0...43 {
             if (a / b > gr) {
                 abList.append(1)
                 b += 1.0
@@ -47,7 +47,7 @@ public class PenroseGrid   {
         anchorList.insert(a1.asNSAppleEventDescriptor(), at: 1)
         anchorList.insert(a2.asNSAppleEventDescriptor(), at: 2)
         props.setParam(anchorList, forKeyword: FourCharCode.pAnchorData)
-        props.setParam(NSAppleEventDescriptor(int32: 5), forKeyword: FourCharCode.pLineWidth)
+        props.setParam(NSAppleEventDescriptor(double: 1.5), forKeyword: FourCharCode.pLineWidth)
         props.setParam(fillColor.asNSAppleEventDescriptor(), forKeyword: FourCharCode.pFillColor)
         props.setParam(col.asNSAppleEventDescriptor(), forKeyword: FourCharCode.pColor)
         props.setParam(pos.asNSAppleEventDescriptor(), forKeyword: FourCharCode.pPosition)
@@ -93,11 +93,11 @@ public class PenroseGrid   {
             nthPaths.append(path)
             var increment: Double
             for aorb in abList {
-                
+                let incr = 9.0
                 if aorb == 0 {
-                    increment = 30 * 1.618
+                    increment = incr * 1.618
                 } else {
-                    increment = 30
+                    increment = incr
                 }
                 currentRadius += increment
                 let posa = SPRadialCoordinates(radius:currentRadius, angle:rads + (0.5 * 3.1416))
