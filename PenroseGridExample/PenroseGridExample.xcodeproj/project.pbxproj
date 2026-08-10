@@ -50,6 +50,7 @@
 			mainGroup = 0F486D603003F0AB0087E6FB;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
+				D5040CC5302A7ACE00235F72 /* XCRemoteSwiftPackageReference "SinterPixels" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 0F486D6A3003F0AB0087E6FB /* Products */;
@@ -194,6 +195,17 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		D5040CC5302A7ACE00235F72 /* XCRemoteSwiftPackageReference "SinterPixels" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/olofhellman/SinterPixels/";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.2.2;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
 	};
 	rootObject = 0F486D613003F0AB0087E6FB /* Project object */;
 }
