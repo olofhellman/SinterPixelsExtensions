@@ -17,9 +17,9 @@ public class SPScript {
                 print("doc: \(firstDoc)  ")
             }
             
-            let props = NSAppleEventDescriptor.record()
-            props.setParam(NSAppleEventDescriptor(int32:1000), forKeyword: FourCharCode.pHeight)
-            props.setParam(NSAppleEventDescriptor(int32:1000), forKeyword: FourCharCode.pWidth)
+            let props = SAERecord()
+            props.setKey(.pHeight, int: 1000) 
+            props.setKey(.pWidth, int: 1000) 
             
             if let madeObject = spApp.make(new: SPDocument.fcc, container: NSAppleEventDescriptor.null(), props: props)
             {
