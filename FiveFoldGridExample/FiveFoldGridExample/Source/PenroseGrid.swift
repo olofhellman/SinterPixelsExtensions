@@ -37,7 +37,7 @@ public class PenroseGrid   {
     public func makeLine( doc: SPDocument, ang: Double, pos: SPRadialCoordinates, col: SPColor) -> NSAppleEventDescriptor? {
         let rads = ang * 3.1416 / 180
          
-        let props = NSAppleEventDescriptor.record()
+        let props = SAERecord()
         let pos1 = SPRadialCoordinates(radius: 600.0, angle: rads + 3.1416)
         let a1 = SPAnchorData(tangent: ang, position: pos1)
         let pos2 = SPRadialCoordinates(radius: 600.0, angle: rads)
@@ -46,11 +46,11 @@ public class PenroseGrid   {
         let fillColor = SPBColor(r:1.0, g:1.0, b:1.0, a:0.0)
         anchorList.insert(a1.asNSAppleEventDescriptor(), at: 1)
         anchorList.insert(a2.asNSAppleEventDescriptor(), at: 2)
-        props.setParam(anchorList, forKeyword: FourCharCode.pAnchorData)
-        props.setParam(NSAppleEventDescriptor(double: 1.5), forKeyword: FourCharCode.pLineWidth)
-        props.setParam(fillColor.asNSAppleEventDescriptor(), forKeyword: FourCharCode.pFillColor)
-        props.setParam(col.asNSAppleEventDescriptor(), forKeyword: FourCharCode.pColor)
-        props.setParam(pos.asNSAppleEventDescriptor(), forKeyword: FourCharCode.pPosition)
+        props.setKey(.pAnchorData, descriptor: anchorList)
+        props.setKey(.pLineWidth, double: 1.5)
+        props.setKey(.pFillColor, descriptor: fillColor.asNSAppleEventDescriptor())
+        props.setKey(.pColor, descriptor: col.asNSAppleEventDescriptor())
+        props.setKey(.pPosition, descriptor: pos.asNSAppleEventDescriptor())
         return doc.make(new: SPPath.fcc, props: props)
     }
     
