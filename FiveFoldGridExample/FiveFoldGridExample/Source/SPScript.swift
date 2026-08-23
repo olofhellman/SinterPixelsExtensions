@@ -18,8 +18,8 @@ public class SPScript {
             }
             
             let props = SAERecord()
-            props.setKey(.pHeight, int: 1000) 
-            props.setKey(.pWidth, int: 1000) 
+            props.setKey(.height, int: 1000) 
+            props.setKey(.width, int: 1000) 
             
             if let madeObject = spApp.make(new: SPDocument.fcc, container: NSAppleEventDescriptor.null(), props: props)
             {

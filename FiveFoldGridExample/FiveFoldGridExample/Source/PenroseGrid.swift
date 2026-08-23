@@ -46,18 +46,18 @@ public class PenroseGrid   {
         let fillColor = SPBColor(r:1.0, g:1.0, b:1.0, a:0.0)
         anchorList.insert(a1.asNSAppleEventDescriptor(), at: 1)
         anchorList.insert(a2.asNSAppleEventDescriptor(), at: 2)
-        props.setKey(.pAnchorData, descriptor: anchorList)
-        props.setKey(.pLineWidth, double: 1.5)
-        props.setKey(.pFillColor, descriptor: fillColor.asNSAppleEventDescriptor())
-        props.setKey(.pColor, descriptor: col.asNSAppleEventDescriptor())
-        props.setKey(.pPosition, descriptor: pos.asNSAppleEventDescriptor())
+        props.setKey(.anchorData, descriptor: anchorList)
+        props.setKey(.lineWidth, double: 1.5)
+        props.setKey(.fillColor, descriptor: fillColor.asNSAppleEventDescriptor())
+        props.setKey(.color, descriptor: col.asNSAppleEventDescriptor())
+        props.setKey(.position, descriptor: pos.asNSAppleEventDescriptor())
         return doc.make(new: SPPath.fcc, props: props)
     }
     
     public func setColor(objects: [NSAppleEventDescriptor], col: SPColor) {
         for object in objects {
             let saeObject = SAEObject(app: app, objSpec: object)
-            let colorProp = saeObject.property(FourCharCode.pColor)
+            let colorProp = saeObject.property(.color)
             colorProp?.setData(newValue: col.asNSAppleEventDescriptor())
         }
     }
