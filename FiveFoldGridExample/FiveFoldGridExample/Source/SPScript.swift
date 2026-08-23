@@ -21,7 +21,7 @@ public class SPScript {
             props.setKey(.height, int: 1000) 
             props.setKey(.width, int: 1000) 
             
-            if let madeObject = spApp.make(new: SPDocument.fcc, container: NSAppleEventDescriptor.null(), props: props)
+            if let madeObject = spApp.make(new: SPDocument.self, props: props)
             {
                 print("event result: \(String(describing: madeObject)))")
                 let pg = PenroseGrid(app: spApp)

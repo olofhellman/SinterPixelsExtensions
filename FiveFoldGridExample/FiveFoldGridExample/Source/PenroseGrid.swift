@@ -10,7 +10,7 @@ import SinterAppleEvents
 import SinterPixels
 
 public class PenroseGrid   {
-    var axisPaths: [Int: [NSAppleEventDescriptor]]
+    var axisPaths: [Int: [SPPath]]
     let app: SPApp
     public init(app: SPApp) {
         axisPaths = [:]
@@ -34,7 +34,7 @@ public class PenroseGrid   {
         return abList
     }
     
-    public func makeLine( doc: SPDocument, ang: Double, pos: SPRadialCoordinates, col: SPColor) -> NSAppleEventDescriptor? {
+    public func makeLine( doc: SPDocument, ang: Double, pos: SPRadialCoordinates, col: SPColor) -> SPPath? {
         let rads = ang * 3.1416 / 180
          
         let props = SAERecord()
@@ -51,18 +51,17 @@ public class PenroseGrid   {
         props.setKey(.fillColor, descriptor: fillColor.asNSAppleEventDescriptor())
         props.setKey(.color, descriptor: col.asNSAppleEventDescriptor())
         props.setKey(.position, descriptor: pos.asNSAppleEventDescriptor())
-        return doc.make(new: SPPath.fcc, props: props)
+        return doc.make(new: SPPath.self, props: props)
     }
     
-    public func setColor(objects: [NSAppleEventDescriptor], col: SPColor) {
-        for object in objects {
-            let saeObject = SAEObject(app: app, objSpec: object)
-            let colorProp = saeObject.property(.color)
+    public func setColor(paths: [SPPath], col: SPColor) {
+        for path in paths {
+            let colorProp = path.property(.color)
             colorProp?.setData(newValue: col.asNSAppleEventDescriptor())
         }
     }
     
-    public func party(on doc: NSAppleEventDescriptor) {
+    public func party(on doc: SPDocument) {
         makeBackgroundLines(in: doc)
         
         var newAlpha = 0.99
@@ -70,15 +69,14 @@ public class PenroseGrid   {
             let spcolor = SPBColor(r: 1.0, g: 0.5, b: 0.5, a: newAlpha)
             for n in 0...4 {
                 if let lines = axisPaths[n] {
-                    setColor(objects: lines, col: spcolor)
+                    setColor(paths: lines, col: spcolor)
                 }
             }
             newAlpha = newAlpha - 0.1
         }
     }
     
-    public func makeBackgroundLines(in doc: NSAppleEventDescriptor) {
-        let spDoc = SPDocument(app: app, objSpec: doc)
+    public func makeBackgroundLines(in spDoc: SPDocument) {
         let abList = makeABSequence()
         let angleList = [0.0, 72.0, 144.0, 216.0, 288.0]
         let origin = SPRadialCoordinates(radius: 0.0, angle: 0.0)
@@ -88,9 +86,10 @@ public class PenroseGrid   {
             let rads = nthAngle * 3.1416 / 180.0
             let myColor = SPHSBColor(h:0.0, s:0.9, b:0.9)
             var currentRadius = 0.0
-            var nthPaths: [NSAppleEventDescriptor?] = []
-            var path = makeLine(doc: spDoc, ang: nthAngle, pos: origin, col: myColor)
-            nthPaths.append(path)
+            var nthPaths: [SPPath] = []
+            if let p = makeLine(doc: spDoc, ang: nthAngle, pos: origin, col: myColor) {
+                nthPaths.append(p)
+            }
             var increment: Double
             for aorb in abList {
                 let incr = 9.0
@@ -103,10 +102,12 @@ public class PenroseGrid   {
                 let posa = SPRadialCoordinates(radius:currentRadius, angle:rads + (0.5 * 3.1416))
                 let posb = SPRadialCoordinates(radius:currentRadius, angle:rads + (1.5 * 3.1416))
                 
-                path = makeLine(doc: spDoc, ang: nthAngle, pos: posa, col: myColor)
-                nthPaths.append(path)
-                path = makeLine(doc: spDoc, ang: nthAngle, pos: posb, col: myColor)
-                nthPaths.append(path)
+                if let p = makeLine(doc: spDoc, ang: nthAngle, pos: posa, col: myColor) {
+                    nthPaths.append(p)
+                }
+                if let p = makeLine(doc: spDoc, ang: nthAngle, pos: posb, col: myColor) {
+                    nthPaths.append(p)
+                }
             }
             axisPaths[axis] = nthPaths.compactMap { $0 }
             axis += 1
